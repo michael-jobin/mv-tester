@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 
 interface RangeProps {
   onValueChange: (value: number) => void
-  defaultValue?: number
+  value: number
   min?: number
   max?: number
   step?: number
@@ -12,17 +12,13 @@ interface RangeProps {
 
 const Range: React.FC<RangeProps> = ({
   onValueChange,
-  defaultValue = 0.05,
+  value,
   min = 0,
   max = 1,
   step = 0.01,
   name = 'customRange',
   label = 'Range',
 }) => {
-  useEffect(() => {
-    onValueChange(defaultValue)
-  }, [defaultValue, onValueChange])
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(event.target.value)
     onValueChange(value)
@@ -38,7 +34,7 @@ const Range: React.FC<RangeProps> = ({
         min={min}
         max={max}
         step={step}
-        defaultValue={defaultValue.toString()}
+        value={value.toString()}
         onChange={handleChange}
         className="form-range"
         id={name}

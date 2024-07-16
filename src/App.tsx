@@ -10,6 +10,9 @@ const App = () => {
   const [mediaSrc, setMediaSrc] = useState<string | null>(null)
   const [isVideo, setIsVideo] = useState(false)
   const [isUploaded, setIsUploaded] = useState(false)
+  const [overlayOpacity, setOverlayOpacity] = useState(0)
+  const [letterBox, setLetterBox] = useState(0)
+  const [fontOpacity, setFontOpacity] = useState(false)
 
   // Media Upload
   const handleMediaUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,21 +45,30 @@ const App = () => {
 
   // inputs
   const handleOpacityChange = (value: number) => {
+    setOverlayOpacity(value)
     document.documentElement.style.setProperty('--overlayOpacity', value.toString())
   }
+
   const handleLetterBoxChange = (value: number) => {
+    setLetterBox(value)
     document.documentElement.style.setProperty('--letterBox', `${value}%`)
   }
+
   const handleFontOpacityToggle = (checked: boolean) => {
+    setFontOpacity(checked)
     document.documentElement.style.setProperty('--titleOpacity', checked ? '1' : '0')
+  }
+
+  const setVh = () => {
+    let vh = window.innerHeight * 0.01
+    document.documentElement.style.setProperty('--vh', `${vh}px`)
   }
 
   // Set vh
   useEffect(() => {
-    const setVh = () => {
-      let vh = window.innerHeight * 0.01
-      document.documentElement.style.setProperty('--vh', `${vh}px`)
-    }
+    handleOpacityChange(overlayOpacity)
+    handleLetterBoxChange(letterBox)
+    handleFontOpacityToggle(fontOpacity)
     setVh()
     window.addEventListener('resize', setVh)
     return () => window.removeEventListener('resize', setVh)
@@ -84,10 +96,11 @@ const App = () => {
                 onToggle={handleFontOpacityToggle}
                 label="コピーを表示する"
                 name="fontOpacityCheckbox"
+                checked={fontOpacity}
               />
               <Range
                 onValueChange={handleOpacityChange}
-                defaultValue={0.05}
+                value={overlayOpacity}
                 min={0}
                 max={1}
                 step={0.01}
@@ -96,7 +109,7 @@ const App = () => {
               />
               <Range
                 onValueChange={handleLetterBoxChange}
-                defaultValue={16}
+                value={letterBox}
                 min={0}
                 max={100}
                 step={1}
