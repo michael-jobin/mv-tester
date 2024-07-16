@@ -1,5 +1,3 @@
-import React, { useEffect } from 'react'
-
 interface RangeProps {
   onValueChange: (value: number) => void
   value: number
