@@ -1,5 +1,3 @@
-import React from 'react'
-
 interface CheckboxProps {
   onToggle: (checked: boolean) => void
   label?: string
